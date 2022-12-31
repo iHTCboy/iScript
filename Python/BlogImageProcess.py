@@ -6,6 +6,8 @@ import json
 from datetime import datetime
 from ImageProcess import Graphics
 
+Image.MAX_IMAGE_PIXELS = 100000000 #提高触发DecompressionBombWarning警告的阈值
+
 # 定义压缩比，数值越大，压缩越小
 SIZE_normal = 1.0
 SIZE_small = 1.5
@@ -191,6 +193,7 @@ def cut_photo():
 		file_list = list_img_file(src_dir)
 		# print file_list
 		if file_list:
+			cut_list = []
 			print_help()
 			for infile in file_list:
 				#img = Image.open(src_dir+infile)
@@ -198,7 +201,11 @@ def cut_photo():
 				if directory_exists(outfile):
 					print('skipe image')
 					continue
-				Graphics(infile=src_dir+infile, outfile=out_dir + infile).cut_by_ratio()            
+				
+				cut_list.append(infile)
+				Graphics(infile=src_dir+infile, outfile=out_dir + infile).cut_by_ratio()
+				
+			print('cut images:' + str(cut_list))
 		else:
 			pass
 	else:
